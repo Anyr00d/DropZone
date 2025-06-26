@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package fileservice;
+
+// Upload request chunk
+message FileChunk {
+  bytes content = 1;           // Chunked binary data
+  string fileName = 2;         // Sent only in first chunk
+  string passcode = 3;         // For CLI-auth
+}
+
+// Upload response with token
+message UploadResponse {
+  string fileId = 1;
+  string downloadToken = 2;
+  string expiresAt = 3;  // ISO timestamp
+}
+
+// Request download by token
+message DownloadRequest {
+  string downloadToken = 1;
+  string passcode = 2;  // Passcode to decrypt/verify
+}
+
+// Server sends file in chunks
+message FileChunkResponse {
+  bytes content = 1;
+}
+
+// Define the service
+service FileService {
+  // Stream upload
+  rpc Upload (stream FileChunk) returns (UploadResponse);
+
+  // Stream download
+  rpc Download (DownloadRequest) returns (stream FileChunkResponse);
+}
