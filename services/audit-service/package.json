@@ -1,0 +1,19 @@
+{
+  "name": "audit-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "dotenv": "^16.5.0",
+    "mongoose": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

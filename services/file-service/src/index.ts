@@ -6,6 +6,7 @@ import { randomUUID } from "crypto";
 import { s3, PutObjectCommand, GetObjectCommand } from "./minio";
 import { Readable } from "stream";
 import { generateHmac } from "./utils/hmac";
+import { connectRabbitMQ, publishToQueue } from "./rabbitmq";
 
 const PROTO_PATH = path.join(__dirname, "../../../proto/file-service.proto");
 
@@ -52,6 +53,11 @@ server.addService(fileService.FileService.service, {
 
       const fileBuffer = fs.readFileSync(tempPath);
 
+      //for audit:
+      const stats = fs.statSync(tempPath);
+      const fileSize = stats.size;
+
+      //upload to minIO
       const s3Key = `uploads/${fileId}-${fileName}`; //path inside S3(minIO here)
       await s3.send(
         new PutObjectCommand({
@@ -73,6 +79,16 @@ server.addService(fileService.FileService.service, {
         fileId,
         downloadToken,
         expiresAt,
+      });
+
+      publishToQueue({
+        event: "file.uploaded",
+        fileId: fileId,
+        user: "cli-user", // placeholder for auth in MVP
+        metadata: {
+          filename: fileName,
+          size: fileSize,
+        },
       });
     });
 
@@ -123,6 +139,15 @@ server.addService(fileService.FileService.service, {
 
       stream.on("end", () => {
         call.end();
+        publishToQueue({
+          event: "file.downloaded",
+          fileId: fileId,
+          user: "cli-user", // placeholder for session
+          metadata: {
+            filename: key.split("/").pop(),
+            size: stream.readableLength || 0, // approximate size
+          },
+        });
       });
 
       stream.on("error", (err: any) => {
@@ -136,10 +161,18 @@ server.addService(fileService.FileService.service, {
   },
 });
 
-server.bindAsync(
-  "0.0.0.0:50051",
-  grpc.ServerCredentials.createInsecure(),
-  () => {
-    console.log("gRPC file-service running at 0.0.0.0:50051");
+(async () => {
+  try {
+    await connectRabbitMQ();
+    server.bindAsync(
+      "0.0.0.0:50051",
+      grpc.ServerCredentials.createInsecure(),
+      () => {
+        console.log("gRPC file-service running at 0.0.0.0:50051");
+      }
+    );
+  } catch (err) {
+    console.error("Failed to start file-service:", err);
+    process.exit(1);
   }
-);
+})();
