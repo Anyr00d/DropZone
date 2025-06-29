@@ -3,9 +3,11 @@ import * as protoLoader from "@grpc/proto-loader";
 import fs from "fs";
 import path from "path";
 import readline from "readline";
-import { Writable } from "stream";
 import { finished } from "stream/promises";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const PROTO_PATH = path.resolve(__dirname, "../../../proto/file-service.proto");
 
 const packageDef = protoLoader.loadSync(PROTO_PATH, {

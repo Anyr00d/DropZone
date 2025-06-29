@@ -3,11 +3,14 @@ import * as protoLoader from "@grpc/proto-loader";
 import path from "path";
 import fs from "fs";
 import { randomUUID } from "crypto";
-import { s3, PutObjectCommand, GetObjectCommand } from "./minio";
+import { s3, PutObjectCommand, GetObjectCommand } from "./minio.js";
 import { Readable } from "stream";
-import { generateHmac } from "./utils/hmac";
-import { connectRabbitMQ, publishToQueue } from "./rabbitmq";
+import { generateHmac } from "./utils/hmac.js";
+import { connectRabbitMQ, publishToQueue } from "./rabbitmq.js";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const PROTO_PATH = path.join(__dirname, "../../../proto/file-service.proto");
 
 // Load proto definition

@@ -3,7 +3,7 @@ import {
   PutObjectCommand,
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
-import { MINIO_CONFIG } from "./config";
+import { MINIO_CONFIG } from "./config.js";
 
 const s3 = new S3Client({
   endpoint: `http://${MINIO_CONFIG.endpoint}:${MINIO_CONFIG.port}`,

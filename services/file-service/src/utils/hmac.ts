@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { HMAC_SECRET } from "../config";
+import { HMAC_SECRET } from "../config.js";
 
 export function generateHmac(
   fileId: string,

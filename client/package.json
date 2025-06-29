@@ -1,22 +1,32 @@
 {
-  "name": "client",
+  "name": "dropzone-client",
+  "description": "Secure file drop CLI using gRPC for DropZone project",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "keywords": [
+    "cli",
+    "grpc",
+    "file-upload",
+    "dropzone"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "dropzone": "./dist/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
   "dependencies": {
     "@grpc/grpc-js": "^1.13.4",
     "@grpc/proto-loader": "^0.7.15",
     "commander": "^14.0.0"
   },
   "devDependencies": {
-    "@types/node": "^24.0.4",
+    "@types/node": "^20.4.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.4.2"
   }
 }

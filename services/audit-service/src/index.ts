@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { MONGODB_URI } from "./config";
-import { startConsumer } from "./rabbit";
+import { MONGODB_URI } from "./config.js";
+import { startConsumer } from "./rabbit.js";
 
 async function start() {
   try {

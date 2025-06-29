@@ -1,6 +1,7 @@
+#!/usr/bin/env node
 import { Command } from "commander";
-import { uploadCommand } from "./commands/upload";
-import { downloadCommand } from "./commands/download";
+import { uploadCommand } from "./commands/upload.js";
+import { downloadCommand } from "./commands/download.js";
 
 const program = new Command();
 

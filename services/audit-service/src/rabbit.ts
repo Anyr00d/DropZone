@@ -1,6 +1,6 @@
 import amqp from "amqplib";
-import { RABBITMQ_URI, QUEUE_NAME } from "./config";
-import { AuditLog } from "./models/AuditLog";
+import { RABBITMQ_URI, QUEUE_NAME } from "./config.js";
+import { AuditLog } from "./models/AuditLog.js";
 
 export async function startConsumer() {
   const conn = await amqp.connect(RABBITMQ_URI);
