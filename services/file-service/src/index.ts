@@ -11,7 +11,7 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const PROTO_PATH = path.join(__dirname, "../../../proto/file-service.proto");
+const PROTO_PATH = path.join(__dirname, "../proto/file-service.proto");
 
 // Load proto definition
 const packageDef = protoLoader.loadSync(PROTO_PATH, {

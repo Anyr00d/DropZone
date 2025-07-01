@@ -27,7 +27,6 @@ message FileChunkResponse {
   bytes content = 1;
 }
 
-// Define the service
 service FileService {
   // Stream upload
   rpc Upload (stream FileChunk) returns (UploadResponse);
