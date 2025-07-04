@@ -17,7 +17,9 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test-upload": "ts-node-esm src/test-upload.ts",
+    "test-download": "ts-node-esm src/test-download.ts"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.13.4",
