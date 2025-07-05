@@ -32,6 +32,9 @@ jobs:
       - name: Extract short commit SHA
         id: vars
         run: echo "TAG=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      
+      - name: Copy proto files
+        run: cp -r ./proto ./services/audit-service/proto
 
       - name: Build & push Docker image
         uses: docker/build-push-action@v5
