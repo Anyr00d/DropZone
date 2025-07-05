@@ -2,6 +2,7 @@
 
 DropZone is a secure CLI-based ephemeral file sharing system designed for internal teams. Built with Node.js, gRPC, RabbitMQ, and MinIO, it ensures privacy, auditability, and ease of deployment.
 Note: Currently this project is just in its initial phase. Play around but don't upload anything sesnsitive until further notice.
+
 ---
 
 ## 🌐 Features
