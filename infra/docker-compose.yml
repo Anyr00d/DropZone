@@ -1,3 +1,6 @@
+#All passwords in this file are a sample for self-hosting.
+#Fell free to edit them out to meet your security needs.
+
 version: "3.8"
 
 services:

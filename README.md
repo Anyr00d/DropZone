@@ -14,12 +14,35 @@ DropZone is a secure CLI-based ephemeral file sharing system designed for intern
 
 ---
 
-## 🚀 Quickstart (Local)
+## 🚀 Quickstart
 
-### 📦 Prerequisites
+### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18+ recommended)
 - [Docker & Docker Compose](https://docs.docker.com/compose/install/)
+
+### Client installation and usage
+
+#### 🛠 Build CLI
+
+```bash
+cd client/
+npm install
+npm run build
+npm link   # Register globally as `dropzone`
+```
+
+#### 📥 Upload a file
+
+```bash
+dropzone upload ./secrets.txt
+```
+
+#### 📤 Download a file
+
+```bash
+dropzone download <TOKEN>
+```
 
 ### 📁 Project Structure
 
@@ -35,7 +58,9 @@ dropzone/
 └── README.md
 ```
 
-### 🐳 Spin Up Dependencies
+### Self-hosting:
+
+Note: Modify client to call your deployed file-service
 
 ```bash
 cd infra/
@@ -48,7 +73,7 @@ docker-compose up -d
 
 > ✅ Creates a MinIO bucket: `dropzone` (must be created manually or on first run)
 
-### 🔧 Environment Variables
+#### 🔧 Environment Variables
 
 Set up a `.env` file in `file-service/`:
 
@@ -62,46 +87,21 @@ S3_ENDPOINT=http://localhost:9000
 Do the same for `audit-service/` (for MongoDB URL, if needed).
 You can check out your variables in docker-compose.yml.
 
-### 🛠 Build CLI
-
-```bash
-cd client/
-npm install
-npm run build
-npm link   # Register globally as `dropzone`
-```
-
-### 📥 Upload a file
-
-```bash
-dropzone upload ./secrets.txt
-```
-
-### 📤 Download a file
-
-```bash
-dropzone download <TOKEN>
-```
-
----
-
-## 🧪 Dev Testing
-
-### File Service
+#### File Service
 
 ```bash
 cd services/file-service
 npx ts-node src/index.ts
 ```
 
-### Audit Service
+#### Audit Service
 
 ```bash
 cd services/audit-service
 npx ts-node src/index.ts
 ```
 
-### Mongo Inspection
+#### Mongo Inspection
 
 You can inspect logs:
 
