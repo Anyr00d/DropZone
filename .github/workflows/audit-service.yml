@@ -3,7 +3,7 @@ name: Build & Deploy audit-service
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'services/audit-service/**'
       - '.github/workflows/audit-service.yml'

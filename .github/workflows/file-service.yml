@@ -3,7 +3,7 @@ name: Build & Deploy file-service
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'services/file-service/**'
       - '.github/workflows/file-service.yml'
