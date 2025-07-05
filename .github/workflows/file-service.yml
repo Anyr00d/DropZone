@@ -20,6 +20,9 @@ jobs:
       - name: Checkout source repo
         uses: actions/checkout@v4
 
+      - name: Copy proto files into service
+        run: cp -r ./proto ./services/file-service/proto
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -32,9 +35,6 @@ jobs:
       - name: Extract short commit SHA
         id: vars
         run: echo "TAG=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      
-      - name: Copy proto files
-        run: cp -r ./proto ./services/audit-service/proto
 
       - name: Build & push Docker image
         uses: docker/build-push-action@v5
@@ -44,7 +44,7 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}
 
-      - name: Clone deployment repo
+      - name: Checkout deployment repo
         uses: actions/checkout@v4
         with:
           repository: Anyr00d/DropZone-deployment
@@ -60,6 +60,5 @@ jobs:
           cd deployment
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add helm/file-service/values.yaml
-          git commit -m "🚀 Update file-service image to ${{ steps.vars.outputs.TAG }}"
+          git commit -am "🚀 Update file-service image to ${{ steps.vars.outputs.TAG }}"
           git push
