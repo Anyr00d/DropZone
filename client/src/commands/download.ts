@@ -21,8 +21,8 @@ const grpcObj = grpc.loadPackageDefinition(packageDef) as any;
 const FileService = grpcObj.fileservice.FileService;
 
 const client = new FileService(
-  "localhost:50051",
-  grpc.credentials.createInsecure()
+  "file.anirudhsanthanam.me:443",
+  grpc.credentials.createSsl()
 );
 
 export async function downloadCommand(token: string) {

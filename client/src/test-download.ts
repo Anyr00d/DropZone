@@ -27,8 +27,8 @@ const proto = grpc.loadPackageDefinition(packageDefinition) as unknown as {
 
 // ✅ Create client
 const client = new proto.fileservice.FileService(
-  'localhost:50051',
-  grpc.credentials.createInsecure()
+  'file.anirudhsanthanam.me:443', //replace with IP in which you have your file service
+   grpc.credentials.createSsl()   //if it does not have ssl yet use insecure()
 );
 
 // 🔐 Provide token and passcode
