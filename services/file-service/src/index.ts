@@ -12,6 +12,7 @@ import { startHealthServer } from "./health.js";
 import { RateLimiter } from "./utils/RateLimiter.js";
 
 const uploadLimiter = new RateLimiter(5, 5); //5 uploads per minute
+const downloadLimiter = new RateLimiter(5, 5);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -114,6 +115,15 @@ server.addService(fileService.FileService.service, {
   },
 
   Download: async (call: any) => {
+    //rate-limiting:
+    const clientKey = call.getPeer();
+    if (!downloadLimiter.isAllowed(clientKey)) {
+      call.emit("error", {
+        code: grpc.status.RESOURCE_EXHAUSTED,
+        message: "Too many downloads. Please try again later.",
+      });
+      return;
+    }
     const { downloadToken, passcode } = call.request;
 
     try {
