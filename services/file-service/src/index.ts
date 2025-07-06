@@ -35,7 +35,7 @@ const server = new grpc.Server();
 server.addService(fileService.FileService.service, {
   Upload: async (call: any, callback: any) => {
     //rate-limiter
-    const clientKey = call.getPeer(); //we limit by IP as no auth
+    const clientKey = call.getPeer(); //we limit by IP
     if (!uploadLimiter.isAllowed(clientKey)) {
       return callback({
         code: grpc.status.RESOURCE_EXHAUSTED,

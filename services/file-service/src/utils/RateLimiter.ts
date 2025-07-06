@@ -26,6 +26,7 @@ export class RateLimiter {
     const refillAmount = elapsedSeconds * this.refillRate;
 
     bucket.tokens = Math.min(this.capacity, bucket.tokens + refillAmount);
+    bucket.tokens = Math.floor(bucket.tokens);
     bucket.lastRefill = now;
 
     if (bucket.tokens >= 1) {
