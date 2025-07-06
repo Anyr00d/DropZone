@@ -1,7 +1,7 @@
 FROM node:lts-alpine3.21
 WORKDIR /app
 COPY package*.json ./
-EXPOSE 3000
+EXPOSE 3002
 RUN npm install
 COPY . .
 RUN npm run build

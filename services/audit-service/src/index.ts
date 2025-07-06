@@ -16,4 +16,4 @@ async function start() {
 }
 
 start();
-startHealthServer(3000);
+startHealthServer(3002);
