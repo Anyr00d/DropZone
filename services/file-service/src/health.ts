@@ -1,5 +1,5 @@
 import express from "express";
-import { getMetrics } from "./utils/metrics";
+import { getMetrics } from "./utils/metrics.js";
 
 export function startHealthServer(port: number) {
   const app = express();
