@@ -10,6 +10,7 @@ import { connectRabbitMQ, publishToQueue } from "./rabbitmq.js";
 import { fileURLToPath } from "url";
 import { startHealthServer } from "./health.js";
 import { RateLimiter } from "./utils/RateLimiter.js";
+import { downloadCounter, uploadCounter } from "./utils/metrics.js";
 
 const uploadLimiter = new RateLimiter(5, 5); //5 uploads per minute
 const downloadLimiter = new RateLimiter(5, 5);
@@ -62,7 +63,7 @@ server.addService(fileService.FileService.service, {
     call.on("end", async () => {
       writeStream.end();
 
-      // Wait until writeStream is fully flushed
+      // Waiting for writeStream to fully flush
       await new Promise<void>((resolve, reject) => {
         writeStream.on("finish", () => resolve());
         writeStream.on("error", (err) => reject(err));
@@ -107,6 +108,9 @@ server.addService(fileService.FileService.service, {
           size: fileSize,
         },
       });
+      
+      //for metrics observavility:
+      uploadCounter.inc();
     });
 
     call.on("error", (err: any) => {
@@ -124,6 +128,7 @@ server.addService(fileService.FileService.service, {
       });
       return;
     }
+
     const { downloadToken, passcode } = call.request;
 
     try {
@@ -174,6 +179,8 @@ server.addService(fileService.FileService.service, {
             size: stream.readableLength || 0, // approximate size
           },
         });
+        //for metrics observability:
+        downloadCounter.inc();
       });
 
       stream.on("error", (err: any) => {

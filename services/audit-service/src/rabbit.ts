@@ -1,6 +1,7 @@
 import amqp from "amqplib";
 import { RABBITMQ_URI, QUEUE_NAME } from "./config.js";
 import { AuditLog } from "./models/AuditLog.js";
+import { auditEventCounter } from "./metrics.js";
 
 export async function startConsumer() {
   const conn = await amqp.connect(RABBITMQ_URI);
@@ -25,8 +26,8 @@ export async function startConsumer() {
 
         await log.save();
         console.log(`✅ Logged: ${data.event} for ${data.fileId}`);
-
         channel.ack(msg);
+        auditEventCounter.inc()
       } catch (err) {
         console.error("❌ Failed to process message:", err);
         channel.nack(msg, false, false); // discard bad message
