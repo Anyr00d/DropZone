@@ -8,6 +8,7 @@ import { Readable } from "stream";
 import { generateHmac } from "./utils/hmac.js";
 import { connectRabbitMQ, publishToQueue } from "./rabbitmq.js";
 import { fileURLToPath } from "url";
+import { startHealthServer } from "./health.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -180,4 +181,4 @@ server.addService(fileService.FileService.service, {
   }
 })();
 
-//test comment to check CICD
+startHealthServer(3000);  //health endpoint in express
