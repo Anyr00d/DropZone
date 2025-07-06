@@ -9,6 +9,9 @@ import { generateHmac } from "./utils/hmac.js";
 import { connectRabbitMQ, publishToQueue } from "./rabbitmq.js";
 import { fileURLToPath } from "url";
 import { startHealthServer } from "./health.js";
+import { RateLimiter } from "./utils/RateLimiter.js";
+
+const uploadLimiter = new RateLimiter(5, 5); //5 uploads per minute
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,6 +34,15 @@ const server = new grpc.Server();
 //fileservice->package while Fileservice->service(has upload and download handlers)
 server.addService(fileService.FileService.service, {
   Upload: async (call: any, callback: any) => {
+    //rate-limiter
+    const clientKey = call.getPeer(); //we limit by IP as no auth
+    if (!uploadLimiter.isAllowed(clientKey)) {
+      return callback({
+        code: grpc.status.RESOURCE_EXHAUSTED,
+        message: 'Too many upload attempts. Please try again later.',
+      });
+    }
+
     let fileName = "";
     let passcode = "";
     const fileId = randomUUID();
