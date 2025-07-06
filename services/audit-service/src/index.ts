@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { MONGODB_URI } from "./config.js";
 import { startConsumer } from "./rabbit.js";
+import { startHealthServer } from "./health.js";
 
 async function start() {
   try {
@@ -15,3 +16,4 @@ async function start() {
 }
 
 start();
+startHealthServer(3000);
